@@ -2,6 +2,7 @@
 {
     Properties
     {
+        _MainTex("Texture", 2D) = "white" {}
         _Rotation("Rotate", Range(-1, 1)) = 0
         _OffsetX("Offset Horizontal", Range(-1, 1)) = 0
         _OffsetY("Offset Vertical", Range(-1, 1)) = 0
