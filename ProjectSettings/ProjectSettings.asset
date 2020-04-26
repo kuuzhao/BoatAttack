@@ -80,6 +80,7 @@ PlayerSettings:
   submitAnalytics: 1
   usePlayerLog: 1
   autoStreamer: 1
+  autoStreamerRootUrl: http://127.0.0.1/AutoStreamer/BoatAttack/ABs
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
@@ -106,6 +107,7 @@ PlayerSettings:
   xboxOneMonoLoggingLevel: 0
   xboxOneLoggingLevel: 1
   xboxOneDisableEsram: 0
+  xboxOneEnableTypeOptimization: 0
   xboxOnePresentImmediateThreshold: 0
   switchQueueCommandMemory: 0
   switchQueueControlMemory: 0
@@ -123,6 +125,7 @@ PlayerSettings:
     Others: 1
   bundleVersion: 0.9
   preloadedAssets:
+  - {fileID: 0}
   - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
