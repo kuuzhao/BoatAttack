@@ -6,6 +6,7 @@
 /Assets/AssetStoreTools*
 /Assets/Placeholders*
 /_win64/
+/_android/
 
 # Visual Studio 2015 cache directory
 /.vs/

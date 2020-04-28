@@ -98,11 +98,17 @@ public class GeneratePlaceholders
             TextureImporter texImporter = TextureImporter.GetAtPath(placeholderPath) as TextureImporter;
             texImporter.maxTextureSize = 32;
 
-            TextureImporterPlatformSettings tips = texImporter.GetPlatformTextureSettings("Standalone");
-            if (tips.overridden)
+            TextureImporterPlatformSettings tipsStandalone = texImporter.GetPlatformTextureSettings("Standalone");
+            if (tipsStandalone.overridden)
             {
-                tips.maxTextureSize = 32;
-                texImporter.SetPlatformTextureSettings(tips);
+                tipsStandalone.maxTextureSize = 32;
+                texImporter.SetPlatformTextureSettings(tipsStandalone);
+            }
+            TextureImporterPlatformSettings tipsAndroid = texImporter.GetPlatformTextureSettings("Android");
+            if (tipsAndroid.overridden)
+            {
+                tipsAndroid.maxTextureSize = 32;
+                texImporter.SetPlatformTextureSettings(tipsAndroid);
             }
 
             AssetDatabase.ImportAsset(placeholderPath, ImportAssetOptions.ForceUpdate);
@@ -112,8 +118,8 @@ public class GeneratePlaceholders
 
     static void BuildAssetBundles(List<AssetBundleBuild> abs)
     {
-        string absDir = "Assets/Placeholders/ABs";
+        string absDir = "Assets/Placeholders/ABs/" + EditorUserBuildSettings.activeBuildTarget.ToString();
         Directory.CreateDirectory(absDir);
-        BuildPipeline.BuildAssetBundles(absDir, abs.ToArray(), BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+        BuildPipeline.BuildAssetBundles(absDir, abs.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
     }
 }
