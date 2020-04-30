@@ -6,6 +6,104 @@ using UnityEngine;
 
 public class GeneratePlaceholders
 {
+    static void GenPlaceholdersForTexture2D(string tex2DAsset)
+    {
+        string placeholderPath = GetPlaceholderAssetPath(tex2DAsset);
+        if (File.Exists(placeholderPath)) return;
+
+        Directory.CreateDirectory(Path.GetDirectoryName(placeholderPath));
+        // The import settings are also duplicated in this case.
+        AssetDatabase.CopyAsset(tex2DAsset, placeholderPath);
+
+        TextureImporter texImporter = TextureImporter.GetAtPath(placeholderPath) as TextureImporter;
+        texImporter.maxTextureSize = 32;
+
+        TextureImporterPlatformSettings tips = texImporter.GetPlatformTextureSettings("Standalone");
+        if (tips.overridden)
+        {
+            tips.maxTextureSize = 32;
+            texImporter.SetPlatformTextureSettings(tips);
+        }
+
+        AssetDatabase.ImportAsset(placeholderPath, ImportAssetOptions.ForceUpdate);
+        Debug.Log("Generate Placeholder: " + placeholderPath);
+    }
+
+    [MenuItem("AutoStreamer/GeneratePlaceholdersTexture")]
+    // Update is called once per frame
+    static void DoGenPlaceholdersForTex2D()
+    {
+        string[] guids;
+        guids = AssetDatabase.FindAssets("t:Texture");
+
+        List<AssetBundleBuild> abs = new List<AssetBundleBuild>();
+        foreach (string guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+            System.Type type = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
+            if (type != typeof(Texture2D)) continue;
+
+            GenPlaceholdersForTexture2D(assetPath);
+
+            // Generate an AssetBundle for the original asset which can be downloaded at runtime.
+            AssetBundleBuild ab = new AssetBundleBuild();
+            ab.assetBundleName = AssetDatabase.AssetPathToGUID(assetPath) + ".abas";
+            ab.assetNames = new string[] { assetPath };
+            abs.Add(ab);
+        }
+
+        // Generate Asset Bundles
+        if (abs.Count > 0)
+        {
+            BuildAssetBundles(abs);
+        }
+    }
+
+    static void GenPlaceholdersForMesh(string mesh2DAsset)
+    {
+        string placeholderPath = GetPlaceholderAssetPath(mesh2DAsset);
+        if (File.Exists(placeholderPath)) return;
+
+        Directory.CreateDirectory(Path.GetDirectoryName(placeholderPath));
+        // The import settings are also duplicated in this case.
+        AssetDatabase.CopyAsset(mesh2DAsset, placeholderPath);
+
+        AssetDatabase.ImportAsset(placeholderPath, ImportAssetOptions.ForceUpdate);
+        Debug.Log("Generate Placeholder: " + placeholderPath);
+    }
+
+    [MenuItem("AutoStreamer/GeneratePlaceholdersMesh")]
+    // Update is called once per frame
+    static void DoGenPlaceholdersForMesh()
+    {
+        string[] guids;
+        guids = AssetDatabase.FindAssets("t:Mesh");
+
+        List<AssetBundleBuild> abs = new List<AssetBundleBuild>();
+        foreach (string guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+            System.Type type = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
+            if (type != typeof(Mesh)) continue;
+
+            GenPlaceholdersForMesh(assetPath);
+
+            // Generate an AssetBundle for the original asset which can be downloaded at runtime.
+            AssetBundleBuild ab = new AssetBundleBuild();
+            ab.assetBundleName = AssetDatabase.AssetPathToGUID(assetPath) + ".abas";
+            ab.assetNames = new string[] { assetPath };
+            abs.Add(ab);
+        }
+
+        // Generate Asset Bundles
+        if (abs.Count > 0)
+        {
+            BuildAssetBundles(abs);
+        }
+    }
+
     [MenuItem("AutoStreamer/GeneratePlaceholdersForScenes")]
     // Update is called once per frame
     static void DoGeneratePlaceholders()
