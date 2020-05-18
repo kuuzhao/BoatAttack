@@ -8,7 +8,7 @@ PlayerSettings:
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
-  defaultScreenOrientation: 2
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 0
@@ -79,7 +79,7 @@ PlayerSettings:
   hideHomeButton: 0
   submitAnalytics: 1
   usePlayerLog: 1
-  autoStreamer: 0
+  autoStreamer: 1
   autoStreamerRootUrl: http://10.86.96.155/AutoStreamer/BoatAttack/ABs/Android
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
@@ -125,7 +125,6 @@ PlayerSettings:
     Others: 1
   bundleVersion: 0.9
   preloadedAssets:
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

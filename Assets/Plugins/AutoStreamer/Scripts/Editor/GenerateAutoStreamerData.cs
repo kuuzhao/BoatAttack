@@ -3,39 +3,45 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GeneratePlaceholders
+public class GenerateAutoStreamerData
 {
-    [MenuItem("AutoStreamer/GeneratePlaceholdersForScenes")]
-    // Update is called once per frame
-    static void DoGeneratePlaceholders()
+    const string kEditorPlaceholdersDir = "Assets/AutoStreamerData/Placeholders";
+    const string kOutputABsDir = "Assets/AutoStreamerData/ABs";
+
+    [MenuItem("AutoStreamer/Generate AutoStreamerData")]
+    static void DoGenerateAutoStreamerData()
     {
-        if (Selection.assetGUIDs.Length == 0)
+        var bsScenes = EditorBuildSettings.scenes;
+        if (bsScenes.Length < 1)
+            return;
+
+        List<string> scenePaths = new List<string>();
+        for (int i = 0; i < bsScenes.Length; ++i)
         {
-            Debug.LogWarning("Please select unity scenes.");
+            var bsScene = bsScenes[i];
+            scenePaths.Add(bsScene.path);
+        }
+
+        string projectRootFolder = Directory.GetParent(Application.dataPath).FullName;
+        string autoStreamerDataFolder = Path.Combine(projectRootFolder, "Assets/AutoStreamerData");
+        if (Directory.Exists(autoStreamerDataFolder))
+        {
+            EditorUtility.DisplayDialog("Error", "Please delete Assets/AutoStreamerData first", "Ok");
             return;
         }
 
-        List<string> scenePaths = new List<string>();
-        for (int i = 0; i < Selection.assetGUIDs.Length; ++i)
-        {
-            string guid = Selection.assetGUIDs[i];
-            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            if (!assetPath.EndsWith(".unity"))
-            {
-                Debug.LogWarning("Please select unity scenes.");
-                return;
-            }
-            scenePaths.Add(assetPath);
-        }
+        AssetDatabase.Refresh();
 
         List<AssetBundleBuild> abs = new List<AssetBundleBuild>();
         List<string> tex2DAssets = new List<string>();
 
-        foreach (var scenePath in scenePaths)
+        for (int i = 0; i < scenePaths.Count; ++i)
         {
+            string scenePath = scenePaths[i];
             ICollection<string> assetPaths = AssetDatabase.GetDependencies(scenePath, true);
-            foreach(var assetPath in assetPaths)
+            foreach (var assetPath in assetPaths)
             {
                 string placeholderPath = GetPlaceholderAssetPath(assetPath);
                 if (File.Exists(placeholderPath))
@@ -74,20 +80,23 @@ public class GeneratePlaceholders
 
         // Create placeholders: other assets
 
-        Debug.Log("DoneGeneratePlaceholders");
+        AssetDatabase.Refresh();
+
+        AssetDatabase.Refresh();
+        Debug.Log("Done Generate AutoStreamerData");
     }
 
     static string GetPlaceholderAssetPath(string assetPath)
     {
         string fileExtension = Path.GetExtension(assetPath);
         string assetPathWoExt = assetPath.Substring(0, assetPath.Length - fileExtension.Length);
-        string newPath = string.Format("Assets/Placeholders/{0}{1}", assetPathWoExt + "-0", fileExtension);
+        string newPath = string.Format("{0}/{1}{2}", kEditorPlaceholdersDir, assetPathWoExt + "-0", fileExtension);
         return newPath;
     }
 
     static void GeneratePlaceholdersForTexture2D(List<string> tex2DAssets)
     {
-        foreach(var tex2DAsset in tex2DAssets)
+        foreach (var tex2DAsset in tex2DAssets)
         {
             string placeholderPath = GetPlaceholderAssetPath(tex2DAsset);
 
@@ -118,8 +127,9 @@ public class GeneratePlaceholders
 
     static void BuildAssetBundles(List<AssetBundleBuild> abs)
     {
-        string absDir = "Assets/Placeholders/ABs/" + EditorUserBuildSettings.activeBuildTarget.ToString();
+        string absDir = Path.Combine(kOutputABsDir, EditorUserBuildSettings.activeBuildTarget.ToString());
         Directory.CreateDirectory(absDir);
         BuildPipeline.BuildAssetBundles(absDir, abs.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
     }
+
 }

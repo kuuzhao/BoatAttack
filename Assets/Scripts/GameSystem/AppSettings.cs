@@ -180,33 +180,28 @@ namespace BoatAttack
 
         public static void LoadScene(string scenePath, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            LoadScene(SceneUtility.GetBuildIndexByScenePath(scenePath), mode);
-        }
-
-        public static void LoadScene(int buildIndex, LoadSceneMode mode)
-        {
             Application.backgroundLoadingPriority = ThreadPriority.Low;
             switch (mode)
             {
                 case LoadSceneMode.Single:
-                    Instance.StartCoroutine(LoadScene(buildIndex));
+                    Instance.StartCoroutine(LoadScene(scenePath));
                     break;
                 case LoadSceneMode.Additive:
-                    SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
+                    SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
         }
 
-        private static IEnumerator LoadScene(int scene)
+        private static IEnumerator LoadScene(string scenePath)
         {
             var loadingScreenLoading = Instance.loadingScreen.InstantiateAsync();
             yield return loadingScreenLoading;
             Instance.loadingScreenObject = loadingScreenLoading.Result;
             DontDestroyOnLoad(Instance.loadingScreenObject);
-            Debug.Log($"loading scene {SceneUtility.GetScenePathByBuildIndex(scene)} at build index {scene}");
-            SceneManager.LoadScene(scene);
+            Debug.Log($"loading scene {scenePath}");
+            SceneManager.LoadScene(scenePath);
         }
 
         private static IEnumerator LoadPrefab<T>(AssetReference assetRef, AsyncOperationHandle assetLoading, Transform parent = null)
@@ -241,7 +236,7 @@ namespace BoatAttack
 
         public static string GetLevelName(int level)
         {
-            return $"level_{Levels[level]}";
+            return $"Assets/scenes/_levels/level_{Levels[level]}.unity";
         }
 
         public static readonly string[] AiNames =

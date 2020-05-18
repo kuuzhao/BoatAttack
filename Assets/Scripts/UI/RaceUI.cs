@@ -166,7 +166,7 @@ namespace BoatAttack.UI
 
         public void FinishMatch()
         {
-            AppSettings.LoadScene(0, LoadSceneMode.Single);
+            AppSettings.LoadScene("Assets/scenes/main_menu.unity", LoadSceneMode.Single);
         }
 
         public void LateUpdate()
