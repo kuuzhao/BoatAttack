@@ -26,14 +26,10 @@ public class GenerateAutoStreamerData
 
         string projectRootFolder = Directory.GetParent(Application.dataPath).FullName;
         string autoStreamerDataFolder = Path.Combine(projectRootFolder, "Assets/AutoStreamerData");
-        if (Directory.Exists(autoStreamerDataFolder))
-        {
-            EditorUtility.DisplayDialog("Error", "Please delete Assets/AutoStreamerData first", "Ok");
-            return;
-        }
 
         AssetDatabase.Refresh();
 
+        List<string> placeholderPaths = new List<string>();
         List<AssetBundleBuild> abs = new List<AssetBundleBuild>();
         List<string> tex2DAssets = new List<string>();
 
@@ -45,7 +41,11 @@ public class GenerateAutoStreamerData
             {
                 string placeholderPath = GetPlaceholderAssetPath(assetPath);
                 if (File.Exists(placeholderPath))
+                {
+                    if (!placeholderPaths.Contains(assetPath))
+                        placeholderPaths.Add(assetPath);
                     continue;
+                }
 
                 bool needPlaceholder = false;
                 System.Type type = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
@@ -66,9 +66,15 @@ public class GenerateAutoStreamerData
                     ab.assetBundleName = AssetDatabase.AssetPathToGUID(assetPath) + ".abas";
                     ab.assetNames = new string[] { assetPath };
                     abs.Add(ab);
+
+                    placeholderPaths.Add(assetPath);
                 }
             }
         }
+
+        // Write out placeholderPaths.txt
+        Directory.CreateDirectory(kEditorPlaceholdersDir);
+        System.IO.File.WriteAllLines(Path.Combine(kEditorPlaceholdersDir, "PlaceholderPaths.txt"), placeholderPaths);
 
         // Generate Asset Bundles
         if (abs.Count > 0)
@@ -79,8 +85,6 @@ public class GenerateAutoStreamerData
             GeneratePlaceholdersForTexture2D(tex2DAssets);
 
         // Create placeholders: other assets
-
-        AssetDatabase.Refresh();
 
         AssetDatabase.Refresh();
         Debug.Log("Done Generate AutoStreamerData");
