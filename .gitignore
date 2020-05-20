@@ -4,7 +4,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/AssetStoreTools*
-/Assets/Placeholders*
+/Assets/AutoStreamerData*
 /Assets/Plugins/AssetBundles-Browser*
 /_win64/
 /_android/
