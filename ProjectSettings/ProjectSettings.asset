@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 0
   companyName: UnityTechnologies
-  productName: BoatAttack
+  productName: BoatAttackAS
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
@@ -80,7 +80,7 @@ PlayerSettings:
   submitAnalytics: 1
   usePlayerLog: 1
   autoStreamer: 1
-  autoStreamerRootUrl: http://10.86.96.155/AutoStreamer/BoatAttack/ABs/Android
+  autoStreamerRootUrl: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/BoatAttack/Android
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
@@ -132,6 +132,7 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -174,7 +175,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Unity3d.BoatAttack
+    Android: com.Unity3d.BoatAttackAS
     iPhone: com.Unity3D.BoatAttack
   buildNumber: {}
   AndroidBundleVersionCode: 1
@@ -878,6 +879,7 @@ PlayerSettings:
     Standalone: 0
   il2cppCompilerConfiguration: {}
   managedStrippingLevel:
+    Android: 3
     Standalone: 3
     iPhone: 2
   incrementalIl2cppBuild: {}
