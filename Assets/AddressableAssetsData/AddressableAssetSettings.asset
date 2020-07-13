@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
   m_DefaultGroup: ae971df5c2b654af9a3670c7d1a6fc27
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_DisableCatalogUpdateOnStart: 0
   m_UniqueBundleIds: 0
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 28ba4bc7b75864163846859a34a42adf
   m_RemoteCatalogLoadPath:
-    m_Id: 
+    m_Id: db15ee1355f3d4f138b374d9a49c2974
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 283cfc36cc7e3476c947ddc708efef12, type: 2}
@@ -47,7 +47,7 @@ MonoBehaviour:
       - m_Id: 28ba4bc7b75864163846859a34a42adf
         m_Value: ServerData/[BuildTarget]
       - m_Id: db15ee1355f3d4f138b374d9a49c2974
-        m_Value: http://localhost/[BuildTarget]
+        m_Value: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/lz/32bit/UnityGames/BoatAttack/ABs
     m_ProfileEntryNames:
     - m_Id: 7f9b679f43cd842e0a2d00c5056601f8
       m_Name: BuildTarget
