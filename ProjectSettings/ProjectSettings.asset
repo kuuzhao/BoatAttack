@@ -80,7 +80,7 @@ PlayerSettings:
   submitAnalytics: 1
   usePlayerLog: 1
   autoStreamer: 1
-  autoStreamerRootUrl: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/lz/32bit/UnityGames/BoatAttack/ABs
+  autoStreamerRootUrl: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/v0.1.0/UnityGames/BoatAttack/ABs
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1

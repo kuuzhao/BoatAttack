@@ -47,7 +47,7 @@ MonoBehaviour:
       - m_Id: 28ba4bc7b75864163846859a34a42adf
         m_Value: ServerData/[BuildTarget]
       - m_Id: db15ee1355f3d4f138b374d9a49c2974
-        m_Value: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/lz/32bit/UnityGames/BoatAttack/ABs
+        m_Value: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/v0.1.0/UnityGames/BoatAttack/ABs
     m_ProfileEntryNames:
     - m_Id: 7f9b679f43cd842e0a2d00c5056601f8
       m_Name: BuildTarget
