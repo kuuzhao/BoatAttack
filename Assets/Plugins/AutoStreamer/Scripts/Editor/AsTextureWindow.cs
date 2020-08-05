@@ -214,7 +214,7 @@ namespace AutoStreamer
                     var placeholderItems = m_TextureConfig.textureItems.Where(x => x.usePlaceholder);
                     statusReport = string.Format("Placeholder: {0}/{1}, AB: {2}",
                         placeholderItems.Count(),
-                        m_TextureConfig.textureItems.Count,
+                        m_TextureConfig.textureItems.Count - 1,
                         EditorUtility.FormatBytes(placeholderItems.Select(x => x.assetBundleSize).Sum()));
                 }
                 GUILayout.Label(statusReport);
@@ -252,9 +252,8 @@ namespace AutoStreamer
                 string statusReport = "";
                 if (m_TextureConfig != null)
                 {
-                    var placeholderItems = m_TextureConfig.textureItems.Where(x => x.usePlaceholder);
                     statusReport = string.Format("Scene: {0}, AB: {1}",
-                        m_SceneData.Count,
+                        m_SceneData.Count - 1,
                         EditorUtility.FormatBytes(m_SceneData.Select(x => x.assetBundleSize).Sum()));
                 }
                 GUILayout.Label(statusReport);
@@ -275,10 +274,50 @@ namespace AutoStreamer
             }
         }
 
+        static void SyncOneTexture(int sceneIdx, string assetPath, object userData)
+        {
+            Dictionary<string, SyncTexureItem> syncMap = userData as Dictionary<string, SyncTexureItem>;
+            string textureABDir = Path.Combine(kOutputTextureABDir, EditorUserBuildSettings.activeBuildTarget.ToString());
+
+            SyncTexureItem syncItem;
+            if (syncMap.ContainsKey(assetPath))
+            {
+                syncItem = syncMap[assetPath];
+            }
+            else
+            {
+                syncItem = new SyncTexureItem(new AsTextureTreeDataItem(assetPath, 0, 0));
+                syncMap.Add(assetPath, syncItem);
+            }
+
+            Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+
+            // TODO: LZ: 
+            //      expose TextureUtil.GetStorageMemorySizeLong
+            syncItem.texItem.runtimeMemory = (int)(Profiler.GetRuntimeMemorySizeLong(tex) / 2);
+            syncItem.texItem.width = tex.width;
+            syncItem.texItem.height = tex.height;
+            syncItem.texItem.refScenes.Add(sceneIdx);
+
+            var placeholderAssetPath = AssetPathToPlaceholderPath(assetPath);
+            syncItem.texItem.placehoderAssetPath = (File.Exists(placeholderAssetPath) ? placeholderAssetPath : null);
+
+            string abPath = Path.Combine(textureABDir, AssetDatabase.AssetPathToGUID(assetPath) + ".abas");
+            if (File.Exists(abPath))
+            {
+                syncItem.texItem.assetBundleSize = (int)(new FileInfo(abPath).Length);
+            }
+            else
+            {
+                syncItem.texItem.assetBundleSize = 0;
+            }
+
+            syncItem.touched = true;
+        }
+
         void SyncTextures()
         {
             var texItems = GetTextureData();
-            string textureABDir = Path.Combine(kOutputTextureABDir, EditorUserBuildSettings.activeBuildTarget.ToString());
 
             Dictionary<string, SyncTexureItem> syncMap = new Dictionary<string, SyncTexureItem>();
             foreach(var item in texItems)
@@ -287,63 +326,15 @@ namespace AutoStreamer
                 syncMap.Add(item.assetPath, new SyncTexureItem(item));
             }
 
-            var bsScenes = EditorBuildSettings.scenes;
-            List<string> scenePaths = new List<string>();
-            for (int i = 0; i < bsScenes.Length; ++i)
-            {
-                var bsScene = bsScenes[i];
-                scenePaths.Add(bsScene.path);
-            }
+            // 1. process scenes
+            AsSceneAssetVisitor texVisitor = new AsSceneAssetVisitor();
+            texVisitor.userData = syncMap;
+            texVisitor.VisitAllAssets(typeof(Texture2D), SyncOneTexture);
 
-            for (int i = 0; i < scenePaths.Count; ++i)
-            {
-                string scenePath = scenePaths[i];
-
-                EditorUtility.DisplayProgressBar("AutoStreamer", "Process scene: "+ i+"/"+ scenePaths.Count, (float)i / scenePaths.Count);
-
-                ICollection<string> assetPaths = AssetDatabase.GetDependencies(scenePath, true);
-                foreach (var assetPath in assetPaths)
-                {
-                    System.Type type = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
-                    if (type == typeof(Texture2D))
-                    {
-                        SyncTexureItem syncItem;
-                        if (syncMap.ContainsKey(assetPath))
-                        {
-                            syncItem = syncMap[assetPath];
-                        }
-                        else
-                        {
-                            syncItem = new SyncTexureItem(new AsTextureTreeDataItem(assetPath, 0, 0));
-                            syncMap.Add(assetPath, syncItem);
-                        }
-
-                        Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
-
-                        // TODO: LZ: 
-                        //      expose TextureUtil.GetStorageMemorySizeLong
-                        syncItem.texItem.runtimeMemory = (int)(Profiler.GetRuntimeMemorySizeLong(tex) / 2);
-                        syncItem.texItem.width = tex.width;
-                        syncItem.texItem.height = tex.height;
-                        syncItem.texItem.refScenes.Add(i);
-
-                        var placeholderAssetPath = AssetPathToPlaceholderPath(assetPath);
-                        syncItem.texItem.placehoderAssetPath = (File.Exists(placeholderAssetPath) ? placeholderAssetPath : null);
-
-                        string abPath = Path.Combine(textureABDir, AssetDatabase.AssetPathToGUID(assetPath) + ".abas");
-                        if (File.Exists(abPath))
-                        {
-                            syncItem.texItem.assetBundleSize = (int)(new FileInfo(abPath).Length);
-                        }
-                        else
-                        {
-                            syncItem.texItem.assetBundleSize = 0;
-                        }
-
-                        syncItem.touched = true;
-                    }
-                }
-            }
+            // 2. process asset bundles
+            AsAssetBundleVisitor abVisitor = new AsAssetBundleVisitor();
+            abVisitor.userData = syncMap;
+            abVisitor.VisitAllAssets(typeof(Texture2D), SyncOneTexture);
 
             texItems.Clear();
             texItems.Add(new AsTextureTreeDataItem("Root", -1, 0));

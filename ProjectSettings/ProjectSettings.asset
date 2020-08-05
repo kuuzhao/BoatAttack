@@ -80,7 +80,7 @@ PlayerSettings:
   submitAnalytics: 1
   usePlayerLog: 1
   autoStreamer: 1
-  autoStreamerRootUrl: https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/v0.1.0/UnityGames/BoatAttack/ABs
+  autoStreamerRootUrl: https://assetstreaming.unity.cn/client_api/v1/buckets/ba292910-2257-4b41-b2e7-6607c527077c/release_by_badge/v0-1-2/content/ABs%252F
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
@@ -125,6 +125,8 @@ PlayerSettings:
     Others: 1
   bundleVersion: 0.9
   preloadedAssets:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -288,7 +290,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 2
   androidSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de, type: 3}
-  AndroidKeystoreName: '{inproject}: user.keystore'
+  AndroidKeystoreName: '{dedicated}: lz.keystore'
   AndroidKeyaliasName: unitylz
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
