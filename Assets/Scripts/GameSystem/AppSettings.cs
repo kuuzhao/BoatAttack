@@ -178,8 +178,13 @@ namespace BoatAttack
             UniversalRenderPipeline.asset.useSRPBatcher = enabled;
         }
 
+        static bool isLoading = false;
         public static void LoadScene(string scenePath, LoadSceneMode mode = LoadSceneMode.Single)
         {
+            if (isLoading)
+                return;
+            isLoading = true;
+
             Application.backgroundLoadingPriority = ThreadPriority.Low;
             switch (mode)
             {
@@ -202,6 +207,7 @@ namespace BoatAttack
             DontDestroyOnLoad(Instance.loadingScreenObject);
             Debug.Log($"loading scene {scenePath}");
             SceneManager.LoadScene(scenePath);
+            isLoading = false;
         }
 
         private static IEnumerator LoadPrefab<T>(AssetReference assetRef, AsyncOperationHandle assetLoading, Transform parent = null)
