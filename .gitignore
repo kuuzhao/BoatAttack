@@ -4,7 +4,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/AssetStoreTools*
-/Assets/InstantGameData*
+/Assets/AutoStreamingData/Placeholders*
 /Assets/Plugins/AssetBundles-Browser*
 /ServerData*
 /_win64/

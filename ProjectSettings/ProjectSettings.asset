@@ -43,6 +43,12 @@ PlayerSettings:
   - logo: {fileID: 21300000, guid: 219a6034c83ac4c4a9242eef17780233, type: 3}
     duration: 2
   m_VirtualRealitySplashScreen: {fileID: 0}
+  m_ShowUnitySplashAds: 0
+  m_AdsAndroidGameId: 
+  m_AdsIosGameId: 
+  m_ShowSplashAdsSlogan: 0
+  m_SloganImage: {fileID: 0}
+  m_SloganHeight: 150
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 800
   defaultScreenHeight: 600
@@ -79,8 +85,11 @@ PlayerSettings:
   hideHomeButton: 0
   submitAnalytics: 1
   usePlayerLog: 1
-  autoStreamer: 1
-  autoStreamerRootUrl: https://assetstreaming.unity.cn/client_api/v1/buckets/ba292910-2257-4b41-b2e7-6607c527077c/release_by_badge/v0-1-2/content/ABs%252F
+  autoStreaming: 1
+  useAnimationStreaming: 0
+  useFontStreaming: 0
+  autoStreamingId: /v1/buckets/6aa38ffa-9803-40d1-8163-4ccfa420d4b0/release_by_badge/V1/content/AS%252F
+  instantGameAppId: 00000003-7ac2-488e-8355-976e5b42406e
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
@@ -115,8 +124,14 @@ PlayerSettings:
   switchNVNShaderPoolsGranularity: 33554432
   switchNVNDefaultPoolsGranularity: 16777216
   switchNVNOtherPoolsGranularity: 16777216
+  switchNVNMaxPublicTextureIDCount: 0
+  switchNVNMaxPublicSamplerIDCount: 0
+  stadiaPresentMode: 0
+  stadiaTargetFramerate: 0
   vulkanNumSwapchainBuffers: 2
   vulkanEnableSetSRGBWrite: 0
+  vulkanEnableLateAcquireNextImage: 0
+  useSecurityBuild: 0
   m_SupportedAspectRatios:
     4:3: 1
     5:4: 1
@@ -125,6 +140,11 @@ PlayerSettings:
     Others: 1
   bundleVersion: 0.9
   preloadedAssets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -214,28 +234,6 @@ PlayerSettings:
   uIStatusBarHidden: 1
   uIExitOnSuspend: 0
   uIStatusBarStyle: 0
-  iPhoneSplashScreen: {fileID: 0}
-  iPhoneHighResSplashScreen: {fileID: 0}
-  iPhoneTallHighResSplashScreen: {fileID: 0}
-  iPhone47inSplashScreen: {fileID: 0}
-  iPhone55inPortraitSplashScreen: {fileID: 0}
-  iPhone55inLandscapeSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de,
-    type: 3}
-  iPhone58inPortraitSplashScreen: {fileID: 0}
-  iPhone58inLandscapeSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de,
-    type: 3}
-  iPadPortraitSplashScreen: {fileID: 0}
-  iPadHighResPortraitSplashScreen: {fileID: 0}
-  iPadLandscapeSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de,
-    type: 3}
-  iPadHighResLandscapeSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de,
-    type: 3}
-  iPhone65inPortraitSplashScreen: {fileID: 0}
-  iPhone65inLandscapeSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de,
-    type: 3}
-  iPhone61inPortraitSplashScreen: {fileID: 0}
-  iPhone61inLandscapeSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de,
-    type: 3}
   appleTVSplashScreen: {fileID: 0}
   appleTVSplashScreen2x: {fileID: 0}
   tvOSSmallIconLayers: []
@@ -287,7 +285,7 @@ PlayerSettings:
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
   templateDefaultScene: 
-  AndroidTargetArchitectures: 1
+  AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 2
   androidSplashScreen: {fileID: 2800000, guid: a2933378be5cc4b0bb3c3cc7f9c079de, type: 3}
   AndroidKeystoreName: '{dedicated}: lz.keystore'
@@ -298,7 +296,7 @@ PlayerSettings:
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
-  androidUseCustomKeystore: 1
+  androidUseCustomKeystore: 0
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -545,8 +543,9 @@ PlayerSettings:
     m_StaticBatching: 1
     m_DynamicBatching: 0
   - m_BuildTarget: Android
-    m_StaticBatching: 1
+    m_StaticBatching: 0
     m_DynamicBatching: 0
+  m_BuildTargetEncrypting: []
   m_BuildTargetGraphicsJobs:
   - m_BuildTarget: MacStandaloneSupport
     m_GraphicsJobs: 0
@@ -790,6 +789,7 @@ PlayerSettings:
   ps4ShareFilePath: 
   ps4ShareOverlayImagePath: 
   ps4PrivacyGuardImagePath: 
+  ps4ExtraSceSysFile: 
   ps4NPtitleDatPath: 
   ps4RemotePlayKeyAssignment: -1
   ps4RemotePlayKeyMappingDir: 
@@ -815,6 +815,7 @@ PlayerSettings:
   ps4UseResolutionFallback: 0
   ps4ReprojectionSupport: 1
   ps4UseAudio3dBackend: 0
+  ps4UseLowGarlicFragmentationMode: 1
   ps4SocialScreenEnabled: 0
   ps4ScriptOptimizationLevel: 2
   ps4Audio3dVirtualSpeakerCount: 14
@@ -831,6 +832,8 @@ PlayerSettings:
   ps4disableAutoHideSplash: 0
   ps4videoRecordingFeaturesUsed: 0
   ps4contentSearchFeaturesUsed: 0
+  ps4CompatibilityPS5: 0
+  ps4GPU800MHz: 1
   ps4attribEyeToEyeDistanceSettingVR: 0
   ps4IncludedModules:
   - libc.prx
@@ -885,11 +888,11 @@ PlayerSettings:
   platformArchitecture:
     iPhone: 1
   scriptingBackend:
-    Android: 0
+    Android: 1
     Standalone: 0
   il2cppCompilerConfiguration: {}
   managedStrippingLevel:
-    Android: 3
+    Android: 1
     Standalone: 3
     iPhone: 2
   incrementalIl2cppBuild: {}
@@ -960,6 +963,7 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   XboxOneXTitleMemory: 8
   XboxOneOverrideIdentityName: 
+  XboxOneOverrideIdentityPublisher: 
   vrEditorSettings:
     daydream:
       daydreamIconForeground: {fileID: 0}
